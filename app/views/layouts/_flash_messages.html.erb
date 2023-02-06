@@ -1,0 +1,17 @@
+<%= content_tag(:div, nil, id: 'shopify-app-flash', data: {
+  controller: "flash",
+  flash: {
+    notice: (flash.now[:notice].presence || flash[:notice]),
+    alert: (flash.now[:alert].presence || flash[:alert]),
+  },
+}) %>
+
+<% unless Rails.configuration.force_iframe %>
+  <% if notice %>
+    <p><%= notice %></p>
+  <% end %>
+
+  <% if alert %>
+    <p><%= alert %></p>
+  <% end %>
+<% end %>

@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <meta name="turbo-cache-control" content="no-preview">
+    <%= csrf_meta_tags %>
+
+    <title><%= content_for(:title) %></title>
+
+    <%= stylesheet_link_tag "polaris_view_components", "application" %>
+    <%= javascript_include_tag "application" %>
+    <%= hotwire_livereload_tags if Rails.env.development? %>
+  </head>
+
+  <body style="<%= polaris_body_styles %>">
+    <%= render "layouts/flash_messages" %>
+
+    <div class="app-wrapper">
+      <div class="app-content">
+        <main role="main">
+          <%= yield %>
+        </main>
+      </div>
+    </div>
+
+    <%= content_tag(:div, nil, id: 'shopify-app-init', data: {
+      api_key: ShopifyApp.configuration.api_key,
+      shop_origin: @shop_origin || (@current_shopify_session.shop if @current_shopify_session),
+      host: @host,
+      load_path: params[:return_to] || home_path,
+      jwt_expire_at: (jwt_expire_at if @current_shopify_session),
+      force_iframe: Rails.configuration.force_iframe.to_s,
+    } ) %>
+  </body>
+</html>
